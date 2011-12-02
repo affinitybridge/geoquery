@@ -1,0 +1,10 @@
+name = Geoquery
+description = Perform geospatial queries against a postgis database
+core = 7.x
+
+dependencies[] = sync_postgis
+
+files[] = geoquery_handler_field_geometry.inc
+files[] = geoquery_handler_argument_geometry.inc
+files[] = geoquery_handler_relationship_geometry_distance.inc
+files[] = geoquery_handler_relationship_geometry_intersection.inc
