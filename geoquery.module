@@ -8,3 +8,33 @@ function geoquery_views_api() {
     'api' => 3,
   );
 }
+
+/************************* GEO-SPATIAL QUERY FUNCITONS ************************/
+
+/**
+ * Whether the geometry of the first node intersects the geometry of the second.
+ */
+function geoquery_intersects($nid1, $nid2) {
+  $geo_query = new geoQuery();
+  return $geo_query->booleanRelQuery('ST_Intersects', $nid1, $nid2);
+}
+
+/**
+ * Whether the geometry of the first node is within the geometry of the second.
+ */
+function geoquery_within($nid1, $nid2) {
+  $geo_query = new geoQuery();
+  return $geo_query->booleanRelQuery('ST_Within', $nid1, $nid2);
+}
+
+/**
+ * Whether the first node is within the $distance buffer of the second node.
+ *
+ * Since the standard geometry column uses SRID 4326, distances will be
+ * measured in degrees. Therefore, it's possible to pass in a different geometry
+ * column to use, if one exists on the pg_node table, whose SRID uses e.g. meters.
+ */
+function geoquery_dwithin($nid1, $nid2, $distance = 0, $column = 'geom') {
+  $geo_query = new geoQuery($column);
+  return $geo_query->booleanRelQuery('ST_DWithin', $nid1, $nid2, $distance);
+}
