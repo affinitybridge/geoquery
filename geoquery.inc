@@ -30,9 +30,15 @@ class geoQuery {
    *   A prepared statement object, already executed.
    */
   public function query($sql, $args = array(), $options = array()) {
-    $result = Database::getConnection('default', $this->db_key)
-      ->query($sql, $args, $options);
-    return $result;
+    try {
+      $result = Database::getConnection('default', $this->db_key)
+        ->query($sql, $args, $options);
+      return $result;
+    }
+    catch (Exception $e) {
+      watchdog_exception('geoquery', $e);
+      return NULL;
+    }
   }
 
   /**
@@ -63,6 +69,11 @@ class geoQuery {
     $sql .= ") AS relation FROM {" . $table . "} AS a CROSS JOIN {" . $table . "} AS b
             WHERE a.nid = :nid1 AND b.nid = :nid2";
     $result = $this->query($sql, array(':nid1' => $nid1, ':nid2' => $nid2));
+
+    if (!$result) {
+      return FALSE;
+    }
+
     foreach ($result as $row) {
       if ($row->relation == TRUE) {
         return TRUE;
