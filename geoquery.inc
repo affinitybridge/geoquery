@@ -60,9 +60,14 @@ class geoQuery {
     if (is_numeric($distance)) {
       $sql .= ", " . $distance;
     }
-    $sql .= ") FROM {" . $table . "} AS a CROSS JOIN {" . $table . "} AS b
+    $sql .= ") AS relation FROM {" . $table . "} AS a CROSS JOIN {" . $table . "} AS b
             WHERE a.nid = :nid1 AND b.nid = :nid2";
-    $result = $this->query($sql, array(':nid1' => $nid1, ':nid2' => $nid2))->fetchField();
-    return $result == 't';
+    $result = $this->query($sql, array(':nid1' => $nid1, ':nid2' => $nid2));
+    foreach ($result as $row) {
+      if ($row->relation == TRUE) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 }
