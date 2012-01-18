@@ -196,7 +196,7 @@ class geoQuery {
 
     $sql .= ' WHERE a.id IN (' . implode(',', $arr) . ')';
     $sql .= ' AND b.nid = :nid';
-    dpm($sql);
+
     $result = $this->query($sql, array(':nid' => $nid));
     return $this->evaluateBooleanRelQuery($result);
   }
