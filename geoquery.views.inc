@@ -157,7 +157,7 @@ function geoquery_views_data() {
       'handler' => 'views_handler_filter_string',
     ),
     'argument' => array(
-      'handler' => 'views_handler_argument_string',
+      'handler' => 'geoquery_views_handler_argument_geometry',
     ),
   );
 
